@@ -25,14 +25,14 @@ interface UserMapper {
 
     @Select(
             """
-        SELECT UserId, UserName, UserEmail,UserIconId FROM users WHERE id=#{userId}
+        SELECT UserId, UserName, UserEmail,UserIconId FROM userDB WHERE id=#{userId}
         """
     )
     fun findUserDataByUserId(userId: Long): UserData
     @Select(
             """
-        SELECT SenderId, RoomId, RoomType,Message,MeaageType,MessageId,SendTime,ReadAlready FROM users WHERE id=#{MessageId}
+        SELECT SenderId, RoomId, RoomType,Message,MeaageType,MessageId,SendTime, FROM MessageDB WHERE id=#{SenderId}
         """
     )
-    fun findMessageByMessageId(MessageId: Long): MessageData
+    fun findMessageByMessageId(SenderId: Long): MessageData
 }

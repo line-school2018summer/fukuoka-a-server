@@ -30,7 +30,5 @@ data class MessageData(
         var Message:String,
         var MessageType:String,
         var MessageId:Long,
-        @get:JsonProperty("SendTime") var SendTime: Timestamp,
-        @get:JsonProperty("SendTime") var UpdateTime: Timestamp,
-        var ReadAlready:List<Boolean>
+        @get:JsonProperty("SendTime") var SendTime: Timestamp
 )

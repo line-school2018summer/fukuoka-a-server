@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class MessageService(private val userMapper: UserMapper) {
-    fun getMessageData(MessageId: Long): MessageData {
-        val messagedata = userMapper.findMessageByMessageId(MessageId)
+    fun getMessageData(SenderId: Long): MessageData {
+        val messagedata = userMapper.findMessageByMessageId(SenderId)
         return messagedata
     }
 }
