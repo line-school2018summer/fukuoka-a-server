@@ -10,4 +10,7 @@ class MessageService(private val userMapper: UserMapper) {
         val messagedata = userMapper.findMessageByMessageId(SenderId)
         return messagedata
     }
+    fun postMessageData(senderId: Long,roomId: Long,roomType:String,message:String,messageId:Long){
+        userMapper.InsertMessageData(senderId,roomId,roomType,message,messageId)
+    }
 }

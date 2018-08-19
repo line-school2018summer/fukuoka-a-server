@@ -4,6 +4,7 @@ import com.example.apiSample.model.MessageData
 import com.example.apiSample.model.UserData
 import com.example.apiSample.model.UserProfile
 import com.example.apiSample.model.UserList
+import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 
@@ -25,14 +26,27 @@ interface UserMapper {
 
     @Select(
             """
-        SELECT UserId, UserName, UserEmail,UserIconId FROM userDB WHERE id=#{userId}
+        SELECT UserId, UserName, UserEmail,UserIconId FROM userDB WHERE UserId=#{userId}
         """
     )
     fun findUserDataByUserId(userId: Long): UserData
     @Select(
             """
-        SELECT SenderId, RoomId, RoomType,Message,MeaageType,MessageId,SendTime, FROM MessageDB WHERE id=#{SenderId}
+        SELECT SenderId, RoomId, RoomType,Message,MessageType,MessageId,SendTime FROM MessageDB WHERE SenderId=#{SenderId}
         """
     )
     fun findMessageByMessageId(SenderId: Long): MessageData
+    @Insert(
+            """
+         INSERT INTO userDB (UserId, UserName, UserEmail,UserIconId) VALUES (#{UserId},#{UserName},#{UserEmail},#{UserIconId})
+        """
+
+    )
+    fun InsertUserData(UserId:Long,UserName:String,UserEmail:String,UserIconId:Long)
+    @Insert(
+            """
+         INSERT INTO MessageDB (SenderId,RoomId,RoomType,Message,MessageType,MessageId,SendTime) VALUES (#{senderId},#{roomId},#{roomType},#{message},"string",#{messageId},CURRENT_TIMESTAMP)
+        """
+    )
+    fun InsertMessageData(senderId: Long,roomId: Long,roomType:String,message:String,messageId:Long)
 }

@@ -41,7 +41,7 @@ class UserController(private val userProfileService: UserProfileService, private
     }
 
     @GetMapping(
-            value = ["/user/{id}/userdata"],
+            value = ["/userget/{id}/userdata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getData(@PathVariable("id" ) userId: Long): UserData {
@@ -49,7 +49,7 @@ class UserController(private val userProfileService: UserProfileService, private
     }
 
     @GetMapping(
-            value = ["/message/{id}/messagedata"],
+            value = ["/messageget/{id}/messagedata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getMessageData(@PathVariable("id" ) userId: Long): MessageData {
@@ -69,6 +69,29 @@ class UserController(private val userProfileService: UserProfileService, private
                     email = it.email
             )
         })
+    }
+
+    @PostMapping(
+            value = ["/userpost/{UserId}/{UserName}/{UserEmail}/{UserIconId}/userdata"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
+                @PathVariable("UserEmail" ) userEmail: String, @PathVariable("UserIconId" ) userIconId: Long
+    ):String {
+        userDataService.postUserData(userId,userName,userEmail,userIconId)
+        return "post: USERID:"+userId+"  USERNAME:"+userName+"  USEREMAIL:"+userEmail+"  USERICONID:"+userIconId
+    }
+
+    @PostMapping(
+            value = ["/messagepost/{SenderId}/{RoomId}/{RoomType}/{Message}/{MessageId}/messagedata"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getMessage(@PathVariable("SenderId" ) senderId: Long, @PathVariable("RoomId" ) roomId: Long,
+                    @PathVariable("RoomType" ) roomType: String, @PathVariable("Message" ) message: String,
+                      @PathVariable("MessageId" ) messageId: Long
+    ):String {
+        messageService.postMessageData(senderId,roomId,roomType,message,messageId)
+        return "post: SENDERID  "+senderId+"ROOMID: "+roomId+"  ROOMTYPE: "+roomType+"  MESSAGE: "+message+"  MESSAGEID: "+messageId
     }
 
 }

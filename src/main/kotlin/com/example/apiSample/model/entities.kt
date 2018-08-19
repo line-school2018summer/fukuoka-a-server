@@ -19,8 +19,8 @@ data class UserList(
 
 data class UserData(
     var UserId: Long,
-    var UserName: Long,
-    var UserEmail: Long,
+    var UserName: String,
+    var UserEmail: String,
     var UserIconId: Long
 )
 data class MessageData(

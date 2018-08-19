@@ -10,4 +10,5 @@ class UserService(private val userMapper: UserMapper) {
     fun findUsersList(searchStr: String): ArrayList<UserList> {
         return userMapper.findBySearchStr(searchStr)
     }
+
 }
