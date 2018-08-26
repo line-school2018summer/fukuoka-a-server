@@ -10,6 +10,12 @@ class UserDataService(private val userMapper: UserMapper) {
         val userdata = userMapper.findUserDataByUserId(userId)
         return userdata
     }
+    fun getUserName(userId: Long): String{
+        return userMapper.findUserNameByUserId(userId)
+    }
+    fun getUserIconURL(userId: Long): String{
+        return userMapper.findUserIconURLByUserId(userId)
+    }
 
     fun postUserData(UserId:Long, UserName:String, UserEmail:String, UserIconId:Long){
         userMapper.InsertUserData(UserId, UserName, UserEmail, UserIconId)
