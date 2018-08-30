@@ -20,9 +20,16 @@ class MessageService(private val userMapper: UserMapper) {
         return userMapper.findSenderIdByMessageId(MessageId)
     }
     fun getLastMessageId(): Long {
-        return userMapper.findLastMessageId()
+        if(userMapper.findLastMessageId()==null)return 0
+        return userMapper.findLastMessageId()!!
     }
-    fun postMessageData(senderId: Long,roomId: Long,roomType:String,message:String,messageId:Long){
-        userMapper.InsertMessageData(senderId,roomId,roomType,message,messageId)
+    fun postMessageData(senderId: Long,groupId: Long,message:String,messageId:Long){
+        return userMapper.InsertMessageData(senderId,groupId,message,messageId)
+    }
+    fun deleteMessageData(){
+        return userMapper.DeleteMessageData()
+    }
+    fun allMessageData():List<MessageData>{
+        return userMapper.AllMessageData()
     }
 }
