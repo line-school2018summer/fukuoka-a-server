@@ -1,35 +1,36 @@
 package com.example.apiSample.service
 
-import com.example.apiSample.mapper.UserMapper
+import com.example.apiSample.mapper.MessageMapper
+
 import com.example.apiSample.model.MessageData
 import org.springframework.stereotype.Service
 
 @Service
-class MessageService(private val userMapper: UserMapper) {
+class MessageService(private val messageMapper: MessageMapper) {
     fun getMessageData(SenderId: Long): MessageData {
-        val messagedata = userMapper.findMessageDataByMessageId(SenderId)
+        val messagedata = messageMapper.findMessageDataByMessageId(SenderId)
         return messagedata
     }
     fun getMessageIdByRoomId(SenderId: Long): List<Long> {
-        return userMapper.findMessageIdByRoomId(SenderId)
+        return messageMapper.findMessageIdByRoomId(SenderId)
     }
     fun getMessageByMessageId(MessageId: Long): String {
-        return userMapper.findMessageByMessageId(MessageId)
+        return messageMapper.findMessageByMessageId(MessageId)
     }
     fun getSenderIdByMessageId(MessageId: Long): Long {
-        return userMapper.findSenderIdByMessageId(MessageId)
+        return messageMapper.findSenderIdByMessageId(MessageId)
     }
     fun getLastMessageId(): Long {
-        if(userMapper.findLastMessageId()==null)return 0
-        return userMapper.findLastMessageId()!!
+        if(messageMapper.findLastMessageId()==null)return 0
+        return messageMapper.findLastMessageId()!!
     }
     fun postMessageData(senderId: Long,groupId: Long,message:String,messageId:Long){
-        return userMapper.InsertMessageData(senderId,groupId,message,messageId)
+        return messageMapper.InsertMessageData(senderId,groupId,message,messageId)
     }
     fun deleteMessageData(){
-        return userMapper.DeleteMessageData()
+        return messageMapper.DeleteMessageData()
     }
     fun allMessageData():List<MessageData>{
-        return userMapper.AllMessageData()
+        return messageMapper.AllMessageData()
     }
 }

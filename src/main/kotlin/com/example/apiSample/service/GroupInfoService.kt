@@ -1,44 +1,44 @@
 package com.example.apiSample.service
 
-import com.example.apiSample.mapper.UserMapper
+import com.example.apiSample.mapper.GroupMapper
 import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
 import org.springframework.stereotype.Service
 
 @Service
-class GroupInfoService(private val userMapper: UserMapper) {
+class GroupInfoService(private val groupMapper: GroupMapper) {
     fun getdataByGroupInfoId(groupInfoId: Long): GroupInfoData {
-        return userMapper.findGroupInfoDataByGroupInfoId(groupInfoId)
+        return groupMapper.findGroupInfoDataByGroupInfoId(groupInfoId)
     }
     fun getGroupIdByUserId(UserId: Long): List<Long> {
-        return userMapper.findGroupIdByUserId(UserId)
+        return groupMapper.findGroupIdByUserId(UserId)
     }
     fun getUserIdByGroupId(GroupId: Long): List<Long> {
-        return userMapper.findUserIdByGroupId(GroupId)
+        return groupMapper.findUserIdByGroupId(GroupId)
     }
     fun getGroupsdataByGroupId(GroupId:Long):GroupsData{
-        return userMapper.GroupsdataByGroupId(GroupId)
+        return groupMapper.GroupsdataByGroupId(GroupId)
     }
     fun deletegroupinfodata(){
-        return userMapper.DeleteGroupInfoData()
+        return groupMapper.DeleteGroupInfoData()
     }
     fun deletegroupdata(){
-        return userMapper.DeleteGroupData()
+        return groupMapper.DeleteGroupData()
     }
     fun allgroupdata(): List<GroupsData>{
-        return userMapper.AllGroupData()
+        return groupMapper.AllGroupData()
     }
     fun allgroupinfodata(): List<GroupInfoData>{
-        return userMapper.AllGroupinfoData()
+        return groupMapper.AllGroupinfoData()
     }
     fun postGroupInfoData(GroupInfoId:Long,UserId:Long, GroupId:Long){
-        userMapper.InsertGroupInfoData(GroupInfoId,UserId,GroupId)
+        groupMapper.InsertGroupInfoData(GroupInfoId,UserId,GroupId)
     }
     fun postGroupData(GroupId:Long,GroupName:String, isGroup:Boolean,GroupIconURL:String){
-        userMapper.InsertGroupData(GroupId,GroupName,isGroup,GroupIconURL)
+        groupMapper.InsertGroupData(GroupId,GroupName,isGroup,GroupIconURL)
     }
     fun getLastGroupInfoId(): Long {
-        if(userMapper.findLastGroupInfoId()==null)return 0
-        return userMapper.findLastGroupInfoId()!!
+        if(groupMapper.findLastGroupInfoId()==null)return 0
+        return groupMapper.findLastGroupInfoId()!!
     }
 }

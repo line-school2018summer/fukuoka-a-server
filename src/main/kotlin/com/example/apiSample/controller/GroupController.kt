@@ -68,7 +68,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //groupidでデータ検索
     @GetMapping(
-            value = ["/groupsid/{groupid}/groupsdata"],
+            value = ["/groupid/{groupid}/groupsdata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getGroupsdataByGroupId(@PathVariable("groupid" ) GroupId: Long): GroupsData {

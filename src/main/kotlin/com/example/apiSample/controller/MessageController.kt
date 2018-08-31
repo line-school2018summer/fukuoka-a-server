@@ -6,12 +6,12 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.sql.Timestamp
 
-@RestController
+
 data class messageidAndSendtime(
         var messageid: Long,
         var SendTime: Timestamp
 )
-
+@RestController
 class MessageController( private val messageService: MessageService){
     @GetMapping(
             value = ["/Allmessage"],
@@ -62,9 +62,9 @@ class MessageController( private val messageService: MessageService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getMessage(@PathVariable("SenderId" ) senderId: Long, @PathVariable("GroupId" ) groupId: Long,
-                   @PathVariable("Message" ) message: String): String{
+                   @PathVariable("Message" ) message: String): Boolean{
         messageService.postMessageData(senderId,groupId,message,messageService.getLastMessageId()+1)
-        return "test"
+        return true
         //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
     }
     @DeleteMapping(
