@@ -3,15 +3,19 @@ package com.example.apiSample.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.sql.Timestamp
 
-
-
+data class user(
+        var Id: Long,
+        var Name: String,
+        var Email: String
+)
+/*
 data class UserData(
     var UserId: Long,
     var UserName: String,
     var UserEmail: String,
     var UserIconId: Long,
     var UserIconURL: String
-)
+)*/
 data class MessageData(
         var SenderId:Long,
         var RoomId:Long,

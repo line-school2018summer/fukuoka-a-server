@@ -1,11 +1,21 @@
 package com.example.apiSample.service
 
 import com.example.apiSample.mapper.UserMapper
-import com.example.apiSample.model.UserData
+import com.example.apiSample.model.user
 import org.springframework.stereotype.Service
 
 @Service
 class UserDataService(private val userMapper: UserMapper) {
+    fun getAllUserData(): List<user> {
+        return userMapper.findAllUserData()
+    }
+    fun deleteUserData(){
+        userMapper.DeleteUserData()
+    }
+    fun postUserData(UserId:Long, UserName:String, UserEmail:String){
+        userMapper.InsertUserData(UserId, UserName, UserEmail)
+    }
+    /*
     fun getAllUserData(): List<UserData> {
         return userMapper.findAllUserData()
     }
@@ -30,5 +40,5 @@ class UserDataService(private val userMapper: UserMapper) {
         if(userMapper.findLastUserIconId()==null)return 0
         return userMapper.findLastUserIconId()!!
     }
-
+*/
 }

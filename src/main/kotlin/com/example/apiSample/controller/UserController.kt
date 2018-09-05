@@ -7,6 +7,35 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(private val userDataService: UserDataService) {
+    //全データ取得
+    @GetMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getAlluserData(): List<user> {
+        return userDataService.getAllUserData()
+    }
+    //データの全消去
+    @DeleteMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deleteUser():String {
+        userDataService.deleteUserData()
+        return "ALL USER DELETE"
+    }
+
+    //データの送信
+    @PostMapping(
+            value = ["/user/{UserId}/{UserName}/{UserEmail}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
+                @PathVariable("UserEmail" ) userEmail: String):Boolean {
+        userDataService.postUserData(userId,userName,userEmail)
+        return true
+    }
+
     //動作確認用
     @GetMapping(
             value = ["/hello"],
@@ -15,6 +44,7 @@ class UserController(private val userDataService: UserDataService) {
     fun hello(): String{
         return "{\"greeting\": \"Hello World!\"}"
     }
+    /*
     //全データ取得
     @GetMapping(
             value = ["/user"],
@@ -68,7 +98,7 @@ class UserController(private val userDataService: UserDataService) {
         userDataService.deleteUserData()
         return "ALL USER DELETE"
     }
-
+*/
 
 
 }

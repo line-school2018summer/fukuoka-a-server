@@ -10,6 +10,26 @@ import org.apache.ibatis.annotations.Delete
 interface UserMapper {
     @Select(
             """
+        SELECT * FROM user
+        """
+    )
+    fun findAllUserData(): List<user>
+    @Insert(
+            """
+         INSERT INTO user (Id, Name, Email) VALUES (#{UserId},#{UserName},#{UserEmail})
+        """
+    )
+    fun InsertUserData(UserId:Long,UserName:String,UserEmail:String)
+    @Delete(
+            """
+         DELETE FROM user
+        """
+    )
+    fun DeleteUserData()
+
+    /*
+    @Select(
+            """
         SELECT UserId, UserName, UserEmail,UserIconId,UserIconURL FROM usersDB
         """
     )
@@ -55,5 +75,6 @@ interface UserMapper {
         """
     )
     fun DeleteUserData()
+    */
 
 }
