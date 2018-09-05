@@ -65,7 +65,7 @@ class MessageController( private val messageService: MessageService){
         return messageService.getLastMessageId()
     }
     @PostMapping(
-            value = ["/message/{SenderId}/{GroupId}/{Message}/messagedata"],
+            value = ["/message/{SenderId}/{GroupId}/{Message}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getMessage(@PathVariable("SenderId" ) senderId: Long, @PathVariable("GroupId" ) groupId: Long,

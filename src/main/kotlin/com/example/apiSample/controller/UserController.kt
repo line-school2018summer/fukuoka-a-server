@@ -50,7 +50,7 @@ class UserController(private val userDataService: UserDataService) {
 
     //データの送信
     @PostMapping(
-            value = ["/user/{UserId}/{UserName}/{UserEmail}/{UserIconURL}/userdata"],
+            value = ["/user/{UserId}/{UserName}/{UserEmail}/{UserIconURL}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
