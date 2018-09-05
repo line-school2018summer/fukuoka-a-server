@@ -1,6 +1,7 @@
 package com.example.apiSample.mapper
 
 import com.example.apiSample.model.MessageData
+import com.example.apiSample.model.message
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -8,6 +9,25 @@ import org.apache.ibatis.annotations.Select
 
 @Mapper
 interface MessageMapper {
+    @Select(
+            """
+         SELECT * FROM message
+        """
+    )
+    fun AllMessageData():List<message>
+    @Insert(
+            """
+         INSERT INTO message (Id,SenderId,RoomId,Content,Type,CreatedAt) VALUES (#{Id},#{SenderId},#{RoomId},#{content},"string",CURRENT_TIMESTAMP)
+        """
+    )
+    fun InsertMessageData(Id:Long,SenderId: Long,RoomId: Long,content:String)
+    @Delete(
+            """
+         DELETE FROM message
+        """
+    )
+    fun DeleteMessageData()
+    /*
     @Select(
             """
         SELECT SenderId, GroupId,Message,MessageType,MessageId,SendTime FROM MessageDB WHERE MessageId=#{MessageId}
@@ -63,5 +83,6 @@ interface MessageMapper {
         """
     )
     fun GetRoomTimeMessage(MessageId: Long,GroupId:Long):List<MessageData>
+    */
 
 }

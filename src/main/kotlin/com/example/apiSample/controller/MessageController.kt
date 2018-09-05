@@ -1,6 +1,7 @@
 package com.example.apiSample.controller
 
 import com.example.apiSample.model.MessageData
+import com.example.apiSample.model.message
 import com.example.apiSample.service.MessageService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -13,6 +14,33 @@ data class messageidAndSendtime(
 )
 @RestController
 class MessageController( private val messageService: MessageService){
+    @GetMapping(
+            value = ["/message"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun allMessage():List<message> {
+        return messageService.allMessageData()
+    }
+    @PostMapping(
+            value = ["/message/{Id}/{SenderId}/{RoomId}/{Content}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getMessage(@PathVariable("Id" ) Id: Long,@PathVariable("SenderId" ) senderId: Long,
+                   @PathVariable("RoomId" ) roomId: Long,
+                   @PathVariable("Content" ) content: String): Boolean{
+        messageService.postMessageData(Id,senderId,roomId,content)
+        return true
+        //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
+    }
+    @DeleteMapping(
+            value = ["/message"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deleteMessage():String {
+        messageService.deleteMessageData()
+        return "ALL MESSAGE DELETE"
+    }
+    /*
     @GetMapping(
             value = ["/message"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
@@ -82,4 +110,5 @@ class MessageController( private val messageService: MessageService){
         messageService.deleteMessageData()
         return "ALL MESSAGE DELETE"
     }
+    */
 }

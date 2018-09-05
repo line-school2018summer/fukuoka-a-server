@@ -3,10 +3,21 @@ package com.example.apiSample.service
 import com.example.apiSample.mapper.MessageMapper
 
 import com.example.apiSample.model.MessageData
+import com.example.apiSample.model.message
 import org.springframework.stereotype.Service
 
 @Service
 class MessageService(private val messageMapper: MessageMapper) {
+    fun postMessageData(Id: Long,senderId: Long,roomId: Long,content:String){
+        return messageMapper.InsertMessageData(Id,senderId,roomId,content)
+    }
+    fun deleteMessageData(){
+        return messageMapper.DeleteMessageData()
+    }
+    fun allMessageData():List<message>{
+        return messageMapper.AllMessageData()
+    }
+    /*
     fun getMessageData(SenderId: Long): MessageData {
         val messagedata = messageMapper.findMessageDataByMessageId(SenderId)
         return messagedata
@@ -36,4 +47,5 @@ class MessageService(private val messageMapper: MessageMapper) {
     fun roomTimeMessageData(MessageId: Long,GroupId:Long):List<MessageData>{
         return messageMapper.GetRoomTimeMessage(MessageId,GroupId)
     }
+    */
 }
