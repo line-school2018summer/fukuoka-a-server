@@ -22,13 +22,13 @@ class MessageController( private val messageService: MessageService){
         return messageService.allMessageData()
     }
     @PostMapping(
-            value = ["/message/{Id}/{SenderId}/{RoomId}/{Content}"],
+            value = ["/message/{SenderId}/{RoomId}/{Content}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getMessage(@PathVariable("Id" ) Id: Long,@PathVariable("SenderId" ) senderId: Long,
+    fun getMessage(@PathVariable("SenderId" ) senderId: Long,
                    @PathVariable("RoomId" ) roomId: Long,
                    @PathVariable("Content" ) content: String): Boolean{
-        messageService.postMessageData(Id,senderId,roomId,content)
+        messageService.postMessageData(messageService.MessageIdMax()+1,senderId,roomId,content)
         return true
         //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
     }

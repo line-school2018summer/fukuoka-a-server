@@ -27,6 +27,12 @@ interface MessageMapper {
         """
     )
     fun DeleteMessageData()
+    @Select(
+            """
+         SELECT MAX(Id) FROM message
+        """
+    )
+    fun MessageMaxId():Long?
     /*
     @Select(
             """

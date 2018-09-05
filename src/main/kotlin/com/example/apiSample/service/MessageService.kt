@@ -17,6 +17,10 @@ class MessageService(private val messageMapper: MessageMapper) {
     fun allMessageData():List<message>{
         return messageMapper.AllMessageData()
     }
+    fun MessageIdMax():Long{
+        if(messageMapper.MessageMaxId()==null)return 0
+        return messageMapper.MessageMaxId()!!
+    }
     /*
     fun getMessageData(SenderId: Long): MessageData {
         val messagedata = messageMapper.findMessageDataByMessageId(SenderId)

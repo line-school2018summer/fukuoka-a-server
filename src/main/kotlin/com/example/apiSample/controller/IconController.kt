@@ -31,12 +31,12 @@ class IconController(private val iconService: IconService){
 
     //データの送信
     @PostMapping(
-            value = ["/icon/{Id}/{URL}/{UserId}"],
+            value = ["/icon/{URL}/{UserId}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getgroupinfoList(@PathVariable("Id" ) Id: Long, @PathVariable("URL" ) URL: String,@PathVariable("UserId" ) userId: Long
+    fun getgroupinfoList(@PathVariable("URL" ) URL: String,@PathVariable("UserId" ) userId: Long
     ):Boolean {
-        iconService.postIconData(Id,URL,userId)
+        iconService.postIconData(iconService.IconIdMax()+1,URL,userId)
         return true
     }
 

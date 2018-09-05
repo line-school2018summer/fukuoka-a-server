@@ -18,4 +18,8 @@ class IconService(private val iconmapper: IconMapper) {
     fun allIconData(): List<icon> {
         return iconmapper.findAllIconData()
     }
+    fun IconIdMax(): Long {
+        if(iconmapper.IconMaxId()==null)return 0
+        return iconmapper.IconMaxId()!!
+    }
 }

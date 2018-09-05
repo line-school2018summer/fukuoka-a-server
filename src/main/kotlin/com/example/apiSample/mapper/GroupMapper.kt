@@ -29,6 +29,14 @@ interface GroupMapper {
         """
     )
     fun DeleteRoomData()
+
+    @Select(
+            """
+         SELECT MAX(Id) FROM room
+        """
+    )
+    fun RoomIdMax(): Long?
+
     @Select(
             """
          SELECT * FROM roominfo

@@ -56,13 +56,13 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //データの送信
     @PostMapping(
-            value = ["/room/{Id}/{Name}/{isGroup}/{IconURL}"],
+            value = ["/room/{Name}/{isGroup}/{IconURL}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getgroupList(@PathVariable("Id" ) id: Long, @PathVariable("Name" ) name: String,
+    fun getgroupList(@PathVariable("Name" ) name: String,
                      @PathVariable("isGroup" ) isGroup: Boolean, @PathVariable("IconURL" ) iconurl: String
     ):Boolean {
-        groupinfoService.postroomData(id,name,isGroup,iconurl)
+        groupinfoService.postroomData(groupinfoService.roomidmax()+1,name,isGroup,iconurl)
         return true
     }
     /*

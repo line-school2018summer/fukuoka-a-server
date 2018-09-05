@@ -27,6 +27,10 @@ class GroupInfoService(private val groupMapper: GroupMapper) {
     fun deleteroomdata(){
         return groupMapper.DeleteRoomData()
     }
+    fun roomidmax():Long{
+        if(groupMapper.RoomIdMax()==null)return 0
+        return groupMapper.RoomIdMax()!!
+    }
     /*
     fun getdataByGroupInfoId(groupInfoId: Long): GroupInfoData {
         return groupMapper.findGroupInfoDataByGroupInfoId(groupInfoId)

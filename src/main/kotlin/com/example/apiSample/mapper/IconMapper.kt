@@ -27,5 +27,11 @@ interface IconMapper {
         """
     )
     fun DeleteIconData()
+    @Select(
+            """
+         SELECT MAX(Id) FROM icon
+        """
+    )
+    fun IconMaxId():Long?
 
 }
