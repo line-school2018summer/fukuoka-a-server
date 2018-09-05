@@ -14,7 +14,7 @@ data class messageidAndSendtime(
 @RestController
 class MessageController( private val messageService: MessageService){
     @GetMapping(
-            value = ["/Allmessage"],
+            value = ["/message"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun allMessage():List<MessageData> {
@@ -58,7 +58,7 @@ class MessageController( private val messageService: MessageService){
         return messageService.getLastMessageId()
     }
     @PostMapping(
-            value = ["/messagepost/{SenderId}/{GroupId}/{Message}/messagedata"],
+            value = ["/message/{SenderId}/{GroupId}/{Message}/messagedata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getMessage(@PathVariable("SenderId" ) senderId: Long, @PathVariable("GroupId" ) groupId: Long,
@@ -68,7 +68,7 @@ class MessageController( private val messageService: MessageService){
         //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
     }
     @DeleteMapping(
-            value = ["/messagedelete"],
+            value = ["/message"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deleteMessage():String {

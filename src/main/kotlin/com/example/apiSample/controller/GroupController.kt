@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class GroupController(private val groupinfoService: GroupInfoService){
     //groupデータの全消去
     @DeleteMapping(
-            value = ["/groupdelete"],
+            value = ["/group"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deletegroup():String {
@@ -19,7 +19,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //groupinfoデータの全消去
     @DeleteMapping(
-            value = ["/groupinfodelete"],
+            value = ["/groupinfo"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deletegroupinfo():String {
@@ -28,7 +28,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //group全検索
     @GetMapping(
-            value = ["/Allgroup"],
+            value = ["/group"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAllGroupdata(): List<GroupsData> {
@@ -36,7 +36,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //groupinfo全検索
     @GetMapping(
-            value = ["/Allgroupinfo"],
+            value = ["/groupinfo"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAllGroupinfodata(): List<GroupInfoData> {
@@ -76,7 +76,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //データの送信
     @PostMapping(
-            value = ["/groupinfopost/{UserId}/{GroupId}"],
+            value = ["/groupinfo/{UserId}/{GroupId}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getgroupinfoList(@PathVariable("UserId" ) userId: Long, @PathVariable("GroupId" ) groupId: Long
@@ -86,7 +86,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     }
     //データの送信
     @PostMapping(
-            value = ["/grouppost/{GroupId}/{GroupName}/{isGroup}/{GroupIconURL}"],
+            value = ["/group/{GroupId}/{GroupName}/{isGroup}/{GroupIconURL}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getgroupList(@PathVariable("GroupId" ) groupid: Long, @PathVariable("GroupName" ) groupname: String,

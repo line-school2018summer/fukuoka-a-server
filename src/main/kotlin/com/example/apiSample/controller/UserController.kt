@@ -17,7 +17,7 @@ class UserController(private val userDataService: UserDataService) {
     }
     //全データ取得
     @GetMapping(
-            value = ["/Alluserget"],
+            value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAlluserData(): List<UserData> {
@@ -49,7 +49,7 @@ class UserController(private val userDataService: UserDataService) {
     }
     //データの送信
     @PostMapping(
-            value = ["/userpost/{UserId}/{UserName}/{UserEmail}/{UserIconURL}/userdata"],
+            value = ["/user/{UserId}/{UserName}/{UserEmail}/{UserIconURL}/userdata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
@@ -60,7 +60,7 @@ class UserController(private val userDataService: UserDataService) {
     }
     //データの全消去
     @DeleteMapping(
-            value = ["/userdelete"],
+            value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deleteUser():String {
