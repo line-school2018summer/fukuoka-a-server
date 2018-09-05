@@ -21,6 +21,13 @@ class MessageController( private val messageService: MessageService){
         return messageService.allMessageData()
     }
     @GetMapping(
+            value = ["/message/{messageId}/{groupId}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun allMessage(@PathVariable("messageId" )messageId: Long,@PathVariable("groupId" )groupId: Long):List<MessageData> {
+        return messageService.roomTimeMessageData(messageId,groupId)
+    }
+    @GetMapping(
             value = ["/messageid/{messageid}/messagedata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )

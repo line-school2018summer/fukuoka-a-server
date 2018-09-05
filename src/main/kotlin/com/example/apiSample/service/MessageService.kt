@@ -33,4 +33,7 @@ class MessageService(private val messageMapper: MessageMapper) {
     fun allMessageData():List<MessageData>{
         return messageMapper.AllMessageData()
     }
+    fun roomTimeMessageData(MessageId: Long,GroupId:Long):List<MessageData>{
+        return messageMapper.GetRoomTimeMessage(MessageId,GroupId)
+    }
 }

@@ -47,6 +47,7 @@ class UserController(private val userDataService: UserDataService) {
     fun getUserIconId(@PathVariable("userid" ) userId: Long): String {
         return userDataService.getUserIconURL(userId)
     }
+
     //データの送信
     @PostMapping(
             value = ["/user/{UserId}/{UserName}/{UserEmail}/{UserIconURL}/userdata"],

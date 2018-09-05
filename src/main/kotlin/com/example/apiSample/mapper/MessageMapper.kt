@@ -57,6 +57,11 @@ interface MessageMapper {
         """
     )
     fun AllMessageData():List<MessageData>
-    
+    @Select(
+            """
+         SELECT * FROM MessageDB WHERE MessageId>#{MessageId} AND GroupId=#{GroupId}
+        """
+    )
+    fun GetRoomTimeMessage(MessageId: Long,GroupId:Long):List<MessageData>
 
 }

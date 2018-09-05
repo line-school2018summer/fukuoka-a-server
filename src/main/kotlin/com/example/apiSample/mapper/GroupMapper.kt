@@ -78,4 +78,5 @@ interface GroupMapper {
         """
     )
     fun DeleteGroupInfoData()
+
 }
