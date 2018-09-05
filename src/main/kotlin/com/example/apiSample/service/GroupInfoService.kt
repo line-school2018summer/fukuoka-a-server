@@ -3,10 +3,31 @@ package com.example.apiSample.service
 import com.example.apiSample.mapper.GroupMapper
 import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
+import com.example.apiSample.model.room
+import com.example.apiSample.model.roominfo
 import org.springframework.stereotype.Service
 
 @Service
 class GroupInfoService(private val groupMapper: GroupMapper) {
+    fun allroomdata(): List<room>{
+        return groupMapper.AllRoomData()
+    }
+    fun allroominfodata(): List<roominfo>{
+        return groupMapper.AllRoominfoData()
+    }
+    fun postroomInfoData(UserId:Long, RoomId:Long){
+        groupMapper.InsertRoominfoData(UserId,RoomId)
+    }
+    fun postroomData(Id:Long,Name:String, isGroup:Boolean,IconURL:String){
+        groupMapper.InsertRoomData(Id,Name,isGroup,IconURL)
+    }
+    fun deleteroominfodata(){
+        return groupMapper.DeleteRoomInfoData()
+    }
+    fun deleteroomdata(){
+        return groupMapper.DeleteRoomData()
+    }
+    /*
     fun getdataByGroupInfoId(groupInfoId: Long): GroupInfoData {
         return groupMapper.findGroupInfoDataByGroupInfoId(groupInfoId)
     }
@@ -41,4 +62,5 @@ class GroupInfoService(private val groupMapper: GroupMapper) {
         if(groupMapper.findLastGroupInfoId()==null)return 0
         return groupMapper.findLastGroupInfoId()!!
     }
+    */
 }

@@ -2,6 +2,8 @@ package com.example.apiSample.mapper
 
 import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
+import com.example.apiSample.model.room
+import com.example.apiSample.model.roominfo
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -9,6 +11,43 @@ import org.apache.ibatis.annotations.Select
 
 @Mapper
 interface GroupMapper {
+    @Select(
+            """
+         SELECT * FROM room
+        """
+    )
+    fun AllRoomData(): List<room>
+    @Insert(
+            """
+         INSERT INTO room (Id,Name,isGroup,IconURL) VALUES (#{Id},#{Name},#{isGroup},#{IconURL})
+        """
+    )
+    fun InsertRoomData(Id: Long,Name:String,isGroup:Boolean,IconURL:String)
+    @Delete(
+            """
+         DELETE FROM room
+        """
+    )
+    fun DeleteRoomData()
+    @Select(
+            """
+         SELECT * FROM roominfo
+        """
+    )
+    fun AllRoominfoData(): List<roominfo>
+    @Insert(
+            """
+         INSERT INTO roominfo (UserID,RoomId) VALUES (#{UserId},#{RoomId})
+        """
+    )
+    fun InsertRoominfoData(UserId: Long,RoomId: Long)
+    @Delete(
+            """
+         DELETE FROM roominfo
+        """
+    )
+    fun DeleteRoomInfoData()
+    /*
     @Select(
             """
         SELECT MAX(GroupInfoId) FROM GroupAttendInfo
@@ -78,5 +117,5 @@ interface GroupMapper {
         """
     )
     fun DeleteGroupInfoData()
-
+*/
 }

@@ -2,12 +2,70 @@ package com.example.apiSample.controller
 
 import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
+import com.example.apiSample.model.room
+import com.example.apiSample.model.roominfo
 import com.example.apiSample.service.GroupInfoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class GroupController(private val groupinfoService: GroupInfoService){
+    //groupデータの全消去
+    @DeleteMapping(
+            value = ["/room"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deletegroup():String {
+        groupinfoService.deleteroomdata()
+        return "ALL ROOM DELETE"
+    }
+    //groupinfoデータの全消去
+    @DeleteMapping(
+            value = ["/roominfo"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deletegroupinfo():String {
+        groupinfoService.deleteroominfodata()
+        return "ALL ROOM DELETE"
+    }
+    //group全検索
+    @GetMapping(
+            value = ["/room"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getAllGroupdata(): List<room> {
+        return groupinfoService.allroomdata()
+    }
+    //groupinfo全検索
+    @GetMapping(
+            value = ["/roominfo"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getAllGroupinfodata(): List<roominfo> {
+        return groupinfoService.allroominfodata()
+    }
+    //データの送信
+    @PostMapping(
+            value = ["/roominfo/{UserId}/{RoomId}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getgroupinfoList(@PathVariable("UserId" ) userId: Long, @PathVariable("RoomId" ) roomId: Long
+    ):Boolean {
+        groupinfoService.postroomInfoData(userId,roomId)
+        return true
+    }
+    //データの送信
+    @PostMapping(
+            value = ["/room/{Id}/{Name}/{isGroup}/{IconURL}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getgroupList(@PathVariable("Id" ) id: Long, @PathVariable("Name" ) name: String,
+                     @PathVariable("isGroup" ) isGroup: Boolean, @PathVariable("IconURL" ) iconurl: String
+    ):Boolean {
+        groupinfoService.postroomData(id,name,isGroup,iconurl)
+        return true
+    }
+    /*
     //groupデータの全消去
     @DeleteMapping(
             value = ["/group"],
@@ -95,4 +153,5 @@ class GroupController(private val groupinfoService: GroupInfoService){
         groupinfoService.postGroupData(groupid,groupname,isGroup,groupiconurl)
         return true
     }
+    */
 }
