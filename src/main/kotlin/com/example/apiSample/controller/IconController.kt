@@ -17,7 +17,7 @@ class IconController(private val iconService: IconService){
     )
     fun deletegroup():String {
         iconService.deleteIconData()
-        return "ALL ROOM DELETE"
+        return "ALL ICON DELETE"
     }
 
     //group全検索
