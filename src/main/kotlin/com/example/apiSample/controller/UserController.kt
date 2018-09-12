@@ -1,18 +1,22 @@
 package com.example.apiSample.controller
 
+//import com.example.apiSample.firebase.AuthGateway
 import com.example.apiSample.model.*
 import com.example.apiSample.service.UserDataService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class UserController(private val userDataService: UserDataService) {
+class UserController(private val userDataService: UserDataService
+                     //,private val authGateway: AuthGateway
+        ) {
     //全データ取得
     @GetMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAlluserData(): List<user> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return userDataService.getAllUserData()
     }
     //データの全消去
@@ -21,6 +25,7 @@ class UserController(private val userDataService: UserDataService) {
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deleteUser():String {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         userDataService.deleteUserData()
         return "ALL USER DELETE"
     }
@@ -32,6 +37,7 @@ class UserController(private val userDataService: UserDataService) {
     )
     fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
                 @PathVariable("UserEmail" ) userEmail: String):Boolean {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         userDataService.postUserData(userId,userName,userEmail)
         return true
     }
@@ -42,6 +48,7 @@ class UserController(private val userDataService: UserDataService) {
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun hello(): String{
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return "{\"greeting\": \"Hello World!\"}"
     }
     /*

@@ -14,8 +14,8 @@ class FirebaseGateWay:AuthGateway{
     //val logger =LoggerFactory.getLogger(FirebaseGateway::class.java)
     companion object {
         init{
-            val firebase_account_path = ""
-            val databaseUrl = ""
+            val firebase_account_path = "test.json"
+            val databaseUrl = "https://test-f98e8.firebaseio.com"
             val firebase_account = FirebaseGateWay::class.java.getResourceAsStream(firebase_account_path)
 
             val options = FirebaseOptions.Builder()

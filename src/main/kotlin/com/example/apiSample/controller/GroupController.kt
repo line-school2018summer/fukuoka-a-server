@@ -1,5 +1,6 @@
 package com.example.apiSample.controller
 
+import com.example.apiSample.firebase.AuthGateway
 import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
 import com.example.apiSample.model.room
@@ -9,13 +10,16 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class GroupController(private val groupinfoService: GroupInfoService){
+class GroupController(private val groupinfoService: GroupInfoService
+                      //,private val authGateway: AuthGateway
+){
     //groupデータの全消去
     @DeleteMapping(
             value = ["/room"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deletegroup():String {
+        //val uid = authGateway.verifyIdToken("s") ?: throw UnauthorizedException("invalid token")
         groupinfoService.deleteroomdata()
         return "ALL ROOM DELETE"
     }
@@ -25,6 +29,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deletegroupinfo():String {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         groupinfoService.deleteroominfodata()
         return "ALL ROOM DELETE"
     }
@@ -34,6 +39,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAllGroupdata(): List<room> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return groupinfoService.allroomdata()
     }
     //groupinfo全検索
@@ -42,6 +48,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAllGroupinfodata(): List<roominfo> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return groupinfoService.allroominfodata()
     }
     //データの送信
@@ -51,6 +58,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     )
     fun getgroupinfoList(@PathVariable("UserId" ) userId: Long, @PathVariable("RoomId" ) roomId: Long
     ):Boolean {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         groupinfoService.postroomInfoData(userId,roomId)
         return true
     }
@@ -62,6 +70,7 @@ class GroupController(private val groupinfoService: GroupInfoService){
     fun getgroupList(@PathVariable("Name" ) name: String,
                      @PathVariable("isGroup" ) isGroup: Boolean, @PathVariable("IconURL" ) iconurl: String
     ):Boolean {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         groupinfoService.postroomData(groupinfoService.roomidmax()+1,name,isGroup,iconurl)
         return true
     }

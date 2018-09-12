@@ -16,6 +16,7 @@ class IconController(private val iconService: IconService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deletegroup():String {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         iconService.deleteIconData()
         return "ALL ICON DELETE"
     }
@@ -26,6 +27,7 @@ class IconController(private val iconService: IconService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getAllGroupdata(): List<icon> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return iconService.allIconData()
     }
 
@@ -36,6 +38,7 @@ class IconController(private val iconService: IconService){
     )
     fun getgroupinfoList(@PathVariable("URL" ) URL: String,@PathVariable("UserId" ) userId: Long
     ):Boolean {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         iconService.postIconData(iconService.IconIdMax()+1,URL,userId)
         return true
     }

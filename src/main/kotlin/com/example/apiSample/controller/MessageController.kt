@@ -1,5 +1,6 @@
 package com.example.apiSample.controller
 
+import com.example.apiSample.firebase.AuthGateway
 import com.example.apiSample.model.MessageData
 import com.example.apiSample.model.message
 import com.example.apiSample.service.MessageService
@@ -13,12 +14,15 @@ data class messageidAndSendtime(
         var SendTime: Timestamp
 )
 @RestController
-class MessageController( private val messageService: MessageService){
+class MessageController( private val messageService: MessageService
+                         ,private val authGateway: AuthGateway
+){
     @GetMapping(
             value = ["/message"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun allMessage():List<message> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return messageService.allMessageData()
     }
     @PostMapping(
@@ -28,6 +32,7 @@ class MessageController( private val messageService: MessageService){
     fun getMessage(@PathVariable("SenderId" ) senderId: Long,
                    @PathVariable("RoomId" ) roomId: Long,
                    @PathVariable("Content" ) content: String): Boolean{
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         messageService.postMessageData(messageService.MessageIdMax()+1,senderId,roomId,content)
         return true
         //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
@@ -37,6 +42,7 @@ class MessageController( private val messageService: MessageService){
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun deleteMessage():String {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         messageService.deleteMessageData()
         return "ALL MESSAGE DELETE"
     }

@@ -14,7 +14,6 @@ class ImageController(){
     produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun upload():String{
-
       return "redirect"
     }
 
