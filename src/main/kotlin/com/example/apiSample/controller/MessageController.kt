@@ -7,6 +7,12 @@ import com.example.apiSample.service.MessageService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.sql.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+
+
+
+
+
 
 
 data class messageidAndSendtime(
@@ -22,8 +28,22 @@ class MessageController( private val messageService: MessageService
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun allMessage():List<message> {
-        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+
         return messageService.allMessageData()
+    }
+    @GetMapping(
+            value = ["/messagestring"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun allMessagestring(@RequestHeader("Token")idToken: String):List<message> {
+
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        return messageService.allMessageData()
+        /*
+        val uid = "5yJjo36Dd5fN0SZchN2iD89Aipx2"
+
+        return FirebaseAuth.getInstance().createCustomToken(uid)
+        */
     }
     @PostMapping(
             value = ["/message/{SenderId}/{RoomId}/{Content}"],

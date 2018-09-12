@@ -1,6 +1,6 @@
 package com.example.apiSample.controller
 
-//import com.example.apiSample.firebase.AuthGateway
+import com.example.apiSample.firebase.AuthGateway
 import com.example.apiSample.model.*
 import com.example.apiSample.service.UserDataService
 import org.springframework.http.MediaType
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(private val userDataService: UserDataService
-                     //,private val authGateway: AuthGateway
+                     ,private val authGateway: AuthGateway
         ) {
     //全データ取得
     @GetMapping(

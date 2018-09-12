@@ -8,10 +8,13 @@ import com.example.apiSample.model.roominfo
 import com.example.apiSample.service.GroupInfoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import com.google.firebase.auth.FirebaseAuth
+
+
 
 @RestController
 class GroupController(private val groupinfoService: GroupInfoService
-                      //,private val authGateway: AuthGateway
+                      ,private val authGateway: AuthGateway
 ){
     //groupデータの全消去
     @DeleteMapping(
