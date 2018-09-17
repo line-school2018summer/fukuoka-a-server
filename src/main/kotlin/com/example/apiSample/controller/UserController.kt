@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class UserController(private val userDataService: UserDataService
                      ,private val authGateway: AuthGateway
         ) {
-    //全データ取得
+    //全ユーザデータ取得
     @GetMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
@@ -19,6 +19,7 @@ class UserController(private val userDataService: UserDataService
         //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return userDataService.getAllUserData()
     }
+
     //データの全消去
     @DeleteMapping(
             value = ["/user"],
@@ -29,7 +30,7 @@ class UserController(private val userDataService: UserDataService
         userDataService.deleteUserData()
         return "ALL USER DELETE"
     }
-
+/*
     //データの送信
     @PostMapping(
             value = ["/user/{UserId}/{UserName}/{UserEmail}"],
@@ -41,6 +42,53 @@ class UserController(private val userDataService: UserDataService
         userDataService.postUserData(userId,userName,userEmail)
         return true
     }
+    */
+
+    //データの送信
+    @PostMapping(
+            value = ["/user/{UserName}/{NamedId}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getList(@PathVariable("UserName" ) userName: String,
+                @RequestHeader("Token")idToken: String,
+                @PathVariable("NamedId" ) namedId: String):user {
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
+    }
+    //useridでデータ検索
+    @GetMapping(
+            value = ["/user/{id}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getData(@PathVariable("id" ) Id: Long): user {
+        return userDataService.findById(Id)
+    }
+    //nameでデータ検索
+    @GetMapping(
+            value = ["/user/Name"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun ByName(@RequestParam("name")Name: String): user {
+        return userDataService.findByName(Name)
+    }
+    //名前IDでデータ検索
+    @GetMapping(
+            value = ["/user/NamedId"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun ByNamedId(@RequestParam("namedId")NamedId: String): user {
+        return userDataService.findByNamedId(NamedId)
+    }
+    @PutMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun updatename(@RequestHeader("Token")idToken: String,@RequestParam("name")changedName:String):user{
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        val id = userDataService.findByUId(uid).Id
+        return userDataService.updatename(id,changedName)
+    }
+
 
     //動作確認用
     @GetMapping(
@@ -83,27 +131,6 @@ class UserController(private val userDataService: UserDataService
     )
     fun getUserIconId(@PathVariable("userid" ) userId: Long): String {
         return userDataService.getUserIconURL(userId)
-    }
-
-    //データの送信
-    @PostMapping(
-            value = ["/user/{UserId}/{UserName}/{UserEmail}/{UserIconURL}"],
-            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
-    )
-    fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
-                @PathVariable("UserEmail" ) userEmail: String, @PathVariable("UserIconURL" ) userIconURL: String
-    ):Boolean {
-        userDataService.postUserData(userId,userName,userEmail,userDataService.getmaxUserIconId()+1,userIconURL)
-        return true
-    }
-    //データの全消去
-    @DeleteMapping(
-            value = ["/user"],
-            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
-    )
-    fun deleteUser():String {
-        userDataService.deleteUserData()
-        return "ALL USER DELETE"
     }
 */
 

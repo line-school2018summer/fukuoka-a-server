@@ -1,10 +1,7 @@
 package com.example.apiSample.mapper
 
 import com.example.apiSample.model.*
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
-import org.apache.ibatis.annotations.Delete
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface UserMapper {
@@ -16,10 +13,11 @@ interface UserMapper {
     fun findAllUserData(): List<user>
     @Insert(
             """
-         INSERT INTO user (Id, Name, Email) VALUES (#{UserId},#{UserName},#{UserEmail})
+         INSERT INTO user (Id, Name, UId,NamedId) VALUES (#{UserId},#{UserName},#{UId},#{NamedId})
         """
     )
-    fun InsertUserData(UserId:Long,UserName:String,UserEmail:String)
+    fun InsertUserData(UserId:Long,UserName:String,UId:String,NamedId:String)
+
     @Delete(
             """
          DELETE FROM user
@@ -27,6 +25,47 @@ interface UserMapper {
     )
     fun DeleteUserData()
 
+    @Update(
+            """
+         UPDATE user SET name=#{changedName} WHERE Id=#{id}
+        """
+    )
+    fun update(id:Long,changedName:String):Unit
+
+    @Select(
+            """
+        SELECT * FROM user WHERE Id=#{id}
+        """
+    )
+    fun findById(id:Long): user?
+
+    @Select(
+            """
+        SELECT * FROM user WHERE UId=#{UId}
+        """
+    )
+    fun findByUId(UId:String): user
+
+    @Select(
+            """
+        SELECT * FROM user WHERE NamedId=#{NamedId}
+        """
+    )
+    fun findByNamedId(NamedId:String): user?
+
+    @Select(
+            """
+        SELECT * FROM user WHERE Name=#{Name}
+        """
+    )
+    fun findByName(Named:String): user?
+
+    @Select(
+            """
+         SELECT MAX(Id) FROM user
+        """
+    )
+    fun UserMaxId():Long?
     /*
     @Select(
             """
