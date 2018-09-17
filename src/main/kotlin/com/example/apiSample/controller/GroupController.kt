@@ -1,10 +1,7 @@
 package com.example.apiSample.controller
 
 import com.example.apiSample.firebase.AuthGateway
-import com.example.apiSample.model.GroupInfoData
-import com.example.apiSample.model.GroupsData
-import com.example.apiSample.model.room
-import com.example.apiSample.model.roominfo
+import com.example.apiSample.model.*
 import com.example.apiSample.service.GroupInfoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -77,6 +74,39 @@ class GroupController(private val groupinfoService: GroupInfoService
         groupinfoService.postroomData(groupinfoService.roomidmax()+1,name,isGroup,iconurl)
         return true
     }
+    //roomidでuseridを出す
+    @GetMapping(
+            value = ["/roominfo/{RoomId}/userid"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun UserIdByRoomId(@PathVariable("RoomId" ) roomId: Long
+    ):List<user>{
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+        return groupinfoService.getMembers(roomId)
+    }
+
+    //nameの変更
+    @PutMapping(
+            value = ["/room/{RoomId}/{Name}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun UpdateRoomName(@PathVariable("RoomId" ) roomId: Long,@PathVariable("Name" ) name: String
+    ):room{
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+        groupinfoService.updateroom(roomId,name)
+        return groupinfoService.getRoomById(roomId)
+    }
+    //roomidのuser変更
+    //useridからroomidを出す
+    @GetMapping(
+            value = ["/roominfo/{UserId}/roomid"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun RoomIdByUserId(@PathVariable("UserId" ) userId: Long
+    ):List<Long>{
+        return groupinfoService.getRoomByUserId(userId)
+    }
+
     /*
     //groupデータの全消去
     @DeleteMapping(

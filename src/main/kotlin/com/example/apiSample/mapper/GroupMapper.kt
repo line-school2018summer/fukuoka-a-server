@@ -4,10 +4,7 @@ import com.example.apiSample.model.GroupInfoData
 import com.example.apiSample.model.GroupsData
 import com.example.apiSample.model.room
 import com.example.apiSample.model.roominfo
-import org.apache.ibatis.annotations.Delete
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface GroupMapper {
@@ -36,6 +33,19 @@ interface GroupMapper {
         """
     )
     fun RoomIdMax(): Long?
+    @Select(
+            """
+         SELECT * FROM room WHERE Id=#{roomid}
+        """
+    )
+    fun RoomByroomid(roomid: Long): room
+    @Update(
+            """
+         UPDATE room SET `name`=#{name} WHERE Id=#{roomid}
+        """
+    )
+    fun updateroom(roomid: Long,name: String)
+
 
     @Select(
             """
@@ -55,6 +65,18 @@ interface GroupMapper {
         """
     )
     fun DeleteRoomInfoData()
+    @Select(
+            """
+         SELECT UserID FROM roominfo WHERE RoomId=#{roomid}
+        """
+    )
+    fun findByRoomId(roomid:Long): List<Long>
+    @Select(
+            """
+         SELECT RoomId FROM roominfo WHERE UserID=#{userid}
+        """
+    )
+    fun findByUserId(userid:Long): List<Long>
     /*
     @Select(
             """

@@ -1,14 +1,12 @@
 package com.example.apiSample.service
 
 import com.example.apiSample.mapper.GroupMapper
-import com.example.apiSample.model.GroupInfoData
-import com.example.apiSample.model.GroupsData
-import com.example.apiSample.model.room
-import com.example.apiSample.model.roominfo
+import com.example.apiSample.mapper.UserMapper
+import com.example.apiSample.model.*
 import org.springframework.stereotype.Service
 
 @Service
-class GroupInfoService(private val groupMapper: GroupMapper) {
+class GroupInfoService(private val groupMapper: GroupMapper,private val userMapper: UserMapper) {
     fun allroomdata(): List<room>{
         return groupMapper.AllRoomData()
     }
@@ -30,6 +28,23 @@ class GroupInfoService(private val groupMapper: GroupMapper) {
     fun roomidmax():Long{
         if(groupMapper.RoomIdMax()==null)return 0
         return groupMapper.RoomIdMax()!!
+    }
+    fun getMembers(roomId:Long):List<user>{
+        val members=groupMapper.findByRoomId(roomId)
+        var list:MutableList<user> = mutableListOf()
+        for(i in members.indices){
+            list.add(userMapper.findById(members[i])!!)
+        }
+        return list
+    }
+    fun getRoomById(roomId:Long):room{
+        return groupMapper.RoomByroomid(roomId)
+    }
+    fun getRoomByUserId(userId:Long):List<Long>{
+        return groupMapper.findByUserId(userId)
+    }
+    fun updateroom(roomId: Long,name:String){
+        return groupMapper.updateroom(roomId,name)
     }
     /*
     fun getdataByGroupInfoId(groupInfoId: Long): GroupInfoData {
