@@ -4,15 +4,11 @@ import com.example.apiSample.firebase.AuthGateway
 import com.example.apiSample.model.MessageData
 import com.example.apiSample.model.message
 import com.example.apiSample.service.MessageService
+import com.example.apiSample.service.UserDataService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.sql.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-
-
-
-
-
 
 
 data class messageidAndSendtime(
@@ -22,6 +18,7 @@ data class messageidAndSendtime(
 @RestController
 class MessageController( private val messageService: MessageService
                          ,private val authGateway: AuthGateway
+                        ,private val userService: UserDataService
 ){
     @GetMapping(
             value = ["/message"],
@@ -46,14 +43,15 @@ class MessageController( private val messageService: MessageService
         */
     }
     @PostMapping(
-            value = ["/message/{SenderId}/{RoomId}/{Content}"],
+            value = ["/message/{RoomId}/{Content}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getMessage(@PathVariable("SenderId" ) senderId: Long,
+    fun getMessage(@RequestHeader("Token")idToken: String,
                    @PathVariable("RoomId" ) roomId: Long,
                    @PathVariable("Content" ) content: String): Boolean{
-        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
-        messageService.postMessageData(messageService.MessageIdMax()+1,senderId,roomId,content)
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        val id = userService.findByUId(uid).Id
+        messageService.postMessageData(messageService.MessageIdMax()+1,id,roomId,content)
         return true
         //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
     }
@@ -65,6 +63,16 @@ class MessageController( private val messageService: MessageService
         //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         messageService.deleteMessageData()
         return "ALL MESSAGE DELETE"
+    }
+    @PutMapping(
+            value = ["/message/{messageid}/{content}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun changeMessage(@PathVariable("messageid" ) messageId: Long,@PathVariable("content" ) content: String,@RequestHeader("Token")idToken: String
+    ):message {
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        val id = userService.findByUId(uid).Id
+        return messageService.updateMessage(id,messageId,content)
     }
     /*
     @GetMapping(

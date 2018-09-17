@@ -2,10 +2,7 @@ package com.example.apiSample.mapper
 
 import com.example.apiSample.model.MessageData
 import com.example.apiSample.model.message
-import org.apache.ibatis.annotations.Delete
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface MessageMapper {
@@ -33,6 +30,20 @@ interface MessageMapper {
         """
     )
     fun MessageMaxId():Long?
+
+    @Update(
+            """
+         UPDATE message SET `Content`=#{Content} WHERE Id=#{messageId}
+        """
+    )
+    fun UpdateMessage(messageId:Long,Content:String):Long
+
+    @Select(
+            """
+         SELECT * FROM message WHERE Id=#{messageId}
+        """
+    )
+    fun findById(messageId: Long):message?
     /*
     @Select(
             """

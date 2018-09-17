@@ -1,5 +1,6 @@
 package com.example.apiSample.service
 
+import com.example.apiSample.controller.BadRequestException
 import com.example.apiSample.mapper.MessageMapper
 
 import com.example.apiSample.model.MessageData
@@ -20,6 +21,14 @@ class MessageService(private val messageMapper: MessageMapper) {
     fun MessageIdMax():Long{
         if(messageMapper.MessageMaxId()==null)return 0
         return messageMapper.MessageMaxId()!!
+    }
+    fun updateMessage(senderId:Long,messageId:Long,Content:String):message{
+        val message= messageMapper.findById(messageId)!!
+        if(message.SenderId == senderId){
+        messageMapper.UpdateMessage(messageId,Content)
+        return messageMapper.findById(messageId)!!
+        }
+        else{throw BadRequestException("no update")}
     }
     /*
     fun getMessageData(SenderId: Long): MessageData {
