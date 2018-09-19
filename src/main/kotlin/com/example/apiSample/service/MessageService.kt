@@ -30,6 +30,12 @@ class MessageService(private val messageMapper: MessageMapper) {
         }
         else{throw BadRequestException("no update")}
     }
+    fun MessageByRoomId(RoomId:Long):List<message>{
+       return messageMapper.findByRoomId(RoomId)
+    }
+    fun getMessageByMessageId(MessageId: Long): message {
+        return messageMapper.findMessageByMessageId(MessageId)
+    }
     /*
     fun getMessageData(SenderId: Long): MessageData {
         val messagedata = messageMapper.findMessageDataByMessageId(SenderId)

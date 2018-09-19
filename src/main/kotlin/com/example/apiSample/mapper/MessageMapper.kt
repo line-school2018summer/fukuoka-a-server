@@ -44,6 +44,19 @@ interface MessageMapper {
         """
     )
     fun findById(messageId: Long):message?
+
+    @Select(
+            """
+         SELECT * FROM message WHERE RoomId=#{roomId}
+        """
+    )
+    fun findByRoomId(roomId: Long):List<message>
+    @Select(
+            """
+        SELECT * FROM MessageDB WHERE MessageId=#{MessageId}
+        """
+    )
+    fun findMessageByMessageId(MessageId: Long): message
     /*
     @Select(
             """

@@ -31,7 +31,7 @@ data class message(
         var RoomId: Long,
         var Content: String,
         var Type: String,
-        @get:JsonProperty("SendTime") var CreatedAt: Timestamp
+        @get:JsonProperty("CreatedAt") var CreatedAt: Timestamp
 )
 /*
 data class UserData(

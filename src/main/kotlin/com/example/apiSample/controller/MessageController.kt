@@ -5,6 +5,7 @@ import com.example.apiSample.model.MessageData
 import com.example.apiSample.model.message
 import com.example.apiSample.service.MessageService
 import com.example.apiSample.service.UserDataService
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.sql.Timestamp
@@ -13,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 data class messageidAndSendtime(
         var messageid: Long,
-        var SendTime: Timestamp
+        @get:JsonProperty("CreatedAt") var CreatedAt: Timestamp
 )
 @RestController
 class MessageController( private val messageService: MessageService
@@ -48,12 +49,15 @@ class MessageController( private val messageService: MessageService
     )
     fun getMessage(@RequestHeader("Token")idToken: String,
                    @PathVariable("RoomId" ) roomId: Long,
-                   @PathVariable("Content" ) content: String): Boolean{
+                   @PathVariable("Content" ) content: String):
+           // messageidAndSendtime
+    Boolean
+    {
         val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
         val id = userService.findByUId(uid).Id
         messageService.postMessageData(messageService.MessageIdMax()+1,id,roomId,content)
         return true
-        //return messageidAndSendtime(messageService.getLastMessageId()+1,//タイム)
+        //return messageidAndSendtime(messageService.MessageIdMax(),messageService.getMessageByMessageId(messageService.MessageIdMax()).CreatedAt)
     }
     @DeleteMapping(
             value = ["/message"],
@@ -73,6 +77,15 @@ class MessageController( private val messageService: MessageService
         val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
         val id = userService.findByUId(uid).Id
         return messageService.updateMessage(id,messageId,content)
+    }
+
+    @GetMapping(
+            value = ["/message/{roomid}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun allMessagebyRoomid(@PathVariable("roomid" ) roomid: Long):List<message> {
+
+        return messageService.MessageByRoomId(roomid)
     }
     /*
     @GetMapping(
