@@ -6,7 +6,7 @@ import java.sql.Timestamp
 data class user(
         var Id: Long,
         var Name: String,
-        var UId: Long,
+        var UId: String,
         var Named_id:String
         //var Email: String
 )

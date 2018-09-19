@@ -7,62 +7,62 @@ import org.apache.ibatis.annotations.*
 interface UserMapper {
     @Select(
             """
-        SELECT * FROM user
+        SELECT * FROM authuser
         """
     )
     fun findAllUserData(): List<user>
     @Insert(
             """
-         INSERT INTO user (Id, Name, UId,NamedId) VALUES (#{UserId},#{UserName},#{UId},#{NamedId})
+         INSERT INTO authuser (Id, Name, UId,NamedId) VALUES (#{UserId},#{UserName},#{UId},#{NamedId})
         """
     )
     fun InsertUserData(UserId:Long,UserName:String,UId:String,NamedId:String)
 
     @Delete(
             """
-         DELETE FROM user
+         DELETE FROM authuser
         """
     )
     fun DeleteUserData()
 
     @Update(
             """
-         UPDATE user SET name=#{changedName} WHERE Id=#{id}
+         UPDATE authuser SET name=#{changedName} WHERE Id=#{id}
         """
     )
     fun update(id:Long,changedName:String):Unit
 
     @Select(
             """
-        SELECT * FROM user WHERE Id=#{id}
+        SELECT * FROM authuser WHERE Id=#{id}
         """
     )
     fun findById(id:Long): user?
 
     @Select(
             """
-        SELECT * FROM user WHERE UId=#{UId}
+        SELECT * FROM authuser WHERE UId=#{UId}
         """
     )
     fun findByUId(UId:String): user
 
     @Select(
             """
-        SELECT * FROM user WHERE NamedId=#{NamedId}
+        SELECT * FROM authuser WHERE NamedId=#{NamedId}
         """
     )
     fun findByNamedId(NamedId:String): user?
 
     @Select(
             """
-        SELECT * FROM user WHERE Name=#{Name}
+        SELECT * FROM authuser WHERE Name=#{Name}
         """
     )
     fun findByName(Named:String): user?
 
     @Select(
             """
-         SELECT MAX(Id) FROM user
+         SELECT MAX(Id) FROM authuser
         """
     )
     fun UserMaxId():Long?

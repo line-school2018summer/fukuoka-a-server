@@ -50,10 +50,11 @@ class UserController(private val userDataService: UserDataService
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getList(@PathVariable("UserName" ) userName: String,
-                @RequestHeader("Token")idToken: String,
+                //@RequestHeader("Token")idToken: String,
                 @PathVariable("NamedId" ) namedId: String):user {
-        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
-        return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
+        //val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        //return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
+        return userDataService.postUserData(userDataService.maxuserid()+1,userName,"test",namedId)
     }
     //useridでデータ検索
     @GetMapping(
@@ -68,7 +69,7 @@ class UserController(private val userDataService: UserDataService
             value = ["/user/Name"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun ByName(@RequestParam("name")Name: String): user {
+    fun ByName(@RequestParam("Name")Name: String): user {
         return userDataService.findByName(Name)
     }
     //名前IDでデータ検索
@@ -76,17 +77,18 @@ class UserController(private val userDataService: UserDataService
             value = ["/user/NamedId"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun ByNamedId(@RequestParam("namedId")NamedId: String): user {
+    fun ByNamedId(@RequestParam("NamedId")NamedId: String): user {
         return userDataService.findByNamedId(NamedId)
     }
     @PutMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun updatename(@RequestHeader("Token")idToken: String,@RequestParam("name")changedName:String):user{
-        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
-        val id = userDataService.findByUId(uid).Id
-        return userDataService.updatename(id,changedName)
+    fun updatename(//@RequestHeader("Token")idToken: String,
+                   @RequestParam("name")changedName:String):user{
+        //val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        //val id = userDataService.findByUId(uid).Id
+        return userDataService.updatename(1,changedName)
     }
 
 
@@ -98,6 +100,17 @@ class UserController(private val userDataService: UserDataService
     fun hello(): String{
         //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return "{\"greeting\": \"Hello World!\"}"
+    }
+
+    //動作確認用
+    @GetMapping(
+            value = ["/user/MyId"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun myId(@RequestHeader("Token")idToken: String): Long{
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        val id = userDataService.findByUId(uid).Id
+        return id
     }
     /*
     //全データ取得
