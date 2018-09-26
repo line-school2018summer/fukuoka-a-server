@@ -36,57 +36,111 @@ $ curl -X GET http://{AWSサーバドメイン}/user/1/profile
 
 ## APIリファレンス
 
-### GET `/user`
-> 動作確認用
+# データベース内容
 
-#### Request
-
-#### Response
-
-| Parameter | Type | Description |
-| -------- | -------- | -------- |
-| greeting | String | Hello World! |
-
-### GET `/userget/{UserId}/userdata`
-> 指定した数字のUserIdの情報をとってくる
-
-#### Request
-
-| Parameter | Type | Description |
-| -------- | -------- | -------- |
-| UserId | Long | |
-
-#### Response
-
-|名前|データ型|データ内容|
-|:----|:----|:-----|
-|UserId|Long|ユーザーの識別ＩＤ|
-|UserName|String|ユーザーの登録名|
+#### 通信チェック
+#### GET HTTP/hello でhelloworld表示
+## ＜ユーザＤＢ＞
+|名前|データ型|データ内容|操作|
+|:----|:----|:-----|:-----|
+|UserId|Long|ユーザーの識別ＩＤ||
+|UserName|String|ユーザーの登録名||
 |UserEmail|String|ユーザーのメールアドレス|
 |UserIconId|Long|ユーザーのアイコン画像ＩＤ|
+|UserIconURL|String|ユーザーのアイコン画像URL|
+フレンドかどうか(isFriend)はローカルのみ持つ
+画像のパスを作る ストレージに持つ
+### GET HTTP /Alluserget
+curl -X GET http://localhost:80/Alluserget
+[]
+### POST HTTP /userpost/{UserId}/{UserName}/{UserEmail}/{UserIconURL}/userdata
+Userデータの登録
+UserIconIdは自動インクリメント
+trueを返す
+### DELETE HTTP /userdelete
+ユーザーデータの全消去
+curl -X DELETE http://localhost:80/userdelete
+ALL USER DELETE
 
-### GET `/messageget/{SenderId}/messagedata`
-> 指定したSenderIdの情報をとってくる
+##### UserIDで名前のString取るGET HTTP '/userget/{Userid}/username'　
 
-#### Request
+##### GET HTTP /userget/{Userid}/usericonurl　UserIDでアイコンURLのString取る
 
-| Parameter | Type | Description |
-| -------- | -------- | -------- |
-| SenderId | Long | |
+##### UserIDで全データ検索 GET HTTP `/userget/{Userid}/userdata`　
 
-#### Response
 
-|名前|データ型|データ内容|
-|:----|:----|:-----|
-|SenderId|Long|送信者のID|
-|RoomId|Long|受信するルーム・個人のID|
-|RoomType|String|受信するルームのタイプ|Use
+
+
+
+
+
+
+
+## ＜グループ管理ＤＢ＞
+|Name|Type|内容|操作|
+|:----|:----|:-----|:-----|
+|GroupInfoId|Long|識別用ID|GET|
+|UserId|Long|ユーザーID|GET|
+|GroupId|Long|グループID|GET|
+
+### DELETE HTTP /groupinfodelete
+
+### GET HTTP /Allgroupinfo
+
+### POST /groupinfopost/{UserId}/{GroupId}
+
+##### GET/groupinfoid/{groupinfoid}/groupdata
+
+
+
+
+## ＜グループＤＢ＞
+|Name|Type|内容|操作|
+|:----|:----|:-----|:-----|
+|GroupId|Long|グループID|GET|
+|GroupName|String|グループ名前|
+|isGroup|Bool|グループかどうか|
+|GroupIconURL|String|アイコンのＵＲＬ|
+
+### DELETE HTTP /groupdelete
+
+### GET HTTP /Allgroup
+
+### POST /grouppost/{GroupId}/{GroupName}/{isGroup}/{GroupIconURL}
+
+##### GET/group/{GroupId}/groupdata
+アイコンのＵＲＬは１：１の時には
+GroupId→UserId→UserIconとたどる
+## ＜メッセージＤＢ＞
+|Name|Type|内容|操作|
+|:----|:----|:-----|:-----|
+|MessageId|Long|メッセージのＩＤ||
+|SenderId|Long|送信者のID||
+|GroupId|Long|受信するルーム・個人のID||
 |Message|Object(String)|メッセージ本体(画像なども含む)|
 |MessageType|String|メッセージの種類|
-|MessageId|Long|メッセージのＩＤ|
-|SendTime|Timestamp|送った日時|
+|SendTime|Timestamp|送った日時||
+
+- 使用方法 messageidが主キー
+- roomidを入れてmessageidListを呼ぶ
+
+### 全データ消去 /messagedelete
 
 
+### データ送信 /messagepost/{SenderId}/{GroupId}/{Message}/messagedata
 
 
+### 全データ検索 \Allmessage
 
+
+### GET HTTP /messageid MessageIdの最大値を返す
+curl -X GET http://localhost:80/messageid
+1
+
+##### GET HTTP /messageid/{messageId}/messagedata メッセージＩＤで全データ表示
+
+##### GET HTTP /roomid/{roomid}/messageid　RoomIdでMessageId(List<Long>)検索
+
+##### GET HTTP /messageid/{messageid}/message 
+
+##### GET HTTP /messageid/{messageid}/senderid

@@ -1,45 +1,127 @@
 package com.example.apiSample.controller
 
-import com.example.apiSample.model.MessageData
-import com.example.apiSample.model.UserData
-import com.example.apiSample.model.UserProfile
-import com.example.apiSample.model.UserList
-import com.example.apiSample.service.MessageService
+import com.example.apiSample.firebase.AuthGateway
+import com.example.apiSample.model.*
 import com.example.apiSample.service.UserDataService
-import com.example.apiSample.service.UserProfileService
-import com.example.apiSample.service.UserService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
-data class UserListResponse(
-        var id: Long,
-        var name: String,
-        var email: String
-)
-
-data class PostSearchRequest(
-        val search_str: String
-)
-
 @RestController
-class UserController(private val userProfileService: UserProfileService, private val userService: UserService,private val userDataService: UserDataService,
-                     private val messageService: MessageService) {
+class UserController(private val userDataService: UserDataService
+                     ,private val authGateway: AuthGateway
+        ) {
+    //全ユーザデータ取得
     @GetMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
+    fun getAlluserData(): List<user> {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+        return userDataService.getAllUserData()
+    }
+
+    //データの全消去
+    @DeleteMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deleteUser():String {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+        userDataService.deleteUserData()
+        return "ALL USER DELETE"
+    }
+/*
+    //データの送信
+    @PostMapping(
+            value = ["/user/{UserId}/{UserName}/{UserEmail}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
+                @PathVariable("UserEmail" ) userEmail: String):Boolean {
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
+        userDataService.postUserData(userId,userName,userEmail)
+        return true
+    }
+    */
+
+    //データの送信
+    @PostMapping(
+            value = ["/user/{UserName}/{NamedId}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getList(@PathVariable("UserName" ) userName: String,
+                @RequestHeader("Token")idToken: String,
+                @PathVariable("NamedId" ) namedId: String):user {
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
+        //return userDataService.postUserData(userDataService.maxuserid()+1,userName,"test",namedId)
+    }
+    //useridでデータ検索
+    @GetMapping(
+            value = ["/user/{id}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getData(@PathVariable("id" ) Id: Long): user {
+        return userDataService.findById(Id)
+    }
+    //nameでデータ検索
+    @GetMapping(
+            value = ["/user/Name"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun ByName(@RequestParam("Name")Name: String): user {
+        return userDataService.findByName(Name)
+    }
+    //名前IDでデータ検索
+    @GetMapping(
+            value = ["/user/NamedId"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun ByNamedId(@RequestParam("NamedId")NamedId: String): List<user> {
+        return userDataService.findByNamedId(NamedId)
+    }
+    @PutMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun updatename(//@RequestHeader("Token")idToken: String,
+                   @RequestParam("name")changedName:String):user{
+        //val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        //val id = userDataService.findByUId(uid).Id
+        return userDataService.updatename(1,changedName)
+    }
+
+
+    //動作確認用
+    @GetMapping(
+            value = ["/hello"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
     fun hello(): String{
+        //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         return "{\"greeting\": \"Hello World!\"}"
     }
 
+    //動作確認用
     @GetMapping(
-            value = ["/user/{id}/profile"],
+            value = ["/user/MyId"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getProfile(@PathVariable("id" ) userId: Long): UserProfile {
-        return userProfileService.getProfile(userId)
+    fun myId(@RequestHeader("Token")idToken: String): Long{
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        val id = userDataService.findByUId(uid).Id
+        return id
     }
-
+    /*
+    //全データ取得
+    @GetMapping(
+            value = ["/user"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getAlluserData(): List<UserData> {
+        return userDataService.getAllUserData()
+    }
+    //useridでデータ検索
     @GetMapping(
             value = ["/userget/{id}/userdata"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
@@ -47,51 +129,23 @@ class UserController(private val userProfileService: UserProfileService, private
     fun getData(@PathVariable("id" ) userId: Long): UserData {
         return userDataService.getUserData(userId)
     }
-
+    //useridで名前検索
     @GetMapping(
-            value = ["/messageget/{id}/messagedata"],
+            value = ["/userget/{userid}/username"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getMessageData(@PathVariable("id" ) userId: Long): MessageData {
-        return messageService.getMessageData(userId)
+    fun getUserName(@PathVariable("userid" ) userId: Long): String {
+        return userDataService.getUserName(userId)
     }
+    //useridでURL検索
+    @GetMapping(
+            value = ["/userget/{userid}/usericonurl"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getUserIconId(@PathVariable("userid" ) userId: Long): String {
+        return userDataService.getUserIconURL(userId)
+    }
+*/
 
-    @PostMapping(
-            value = ["/user/search"],
-            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
-    )
-    fun getList(@RequestBody request: PostSearchRequest): Map<String, List<UserListResponse>> {
-        val userList: ArrayList<UserList> = userService.findUsersList(request.search_str)
-        return mapOf("results" to userList.map {
-            UserListResponse(
-                    id = it.id,
-                    name = it.name,
-                    email = it.email
-            )
-        })
-    }
-
-    @PostMapping(
-            value = ["/userpost/{UserId}/{UserName}/{UserEmail}/{UserIconId}/userdata"],
-            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
-    )
-    fun getList(@PathVariable("UserId" ) userId: Long, @PathVariable("UserName" ) userName: String,
-                @PathVariable("UserEmail" ) userEmail: String, @PathVariable("UserIconId" ) userIconId: Long
-    ):String {
-        userDataService.postUserData(userId,userName,userEmail,userIconId)
-        return "post: USERID:"+userId+"  USERNAME:"+userName+"  USEREMAIL:"+userEmail+"  USERICONID:"+userIconId
-    }
-
-    @PostMapping(
-            value = ["/messagepost/{SenderId}/{RoomId}/{RoomType}/{Message}/{MessageId}/messagedata"],
-            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
-    )
-    fun getMessage(@PathVariable("SenderId" ) senderId: Long, @PathVariable("RoomId" ) roomId: Long,
-                    @PathVariable("RoomType" ) roomType: String, @PathVariable("Message" ) message: String,
-                      @PathVariable("MessageId" ) messageId: Long
-    ):String {
-        messageService.postMessageData(senderId,roomId,roomType,message,messageId)
-        return "post: SENDERID  "+senderId+"ROOMID: "+roomId+"  ROOMTYPE: "+roomType+"  MESSAGE: "+message+"  MESSAGEID: "+messageId
-    }
 
 }

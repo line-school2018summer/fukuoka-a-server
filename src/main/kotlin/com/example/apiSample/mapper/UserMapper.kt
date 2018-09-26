@@ -1,52 +1,119 @@
 package com.example.apiSample.mapper
 
-import com.example.apiSample.model.MessageData
-import com.example.apiSample.model.UserData
-import com.example.apiSample.model.UserProfile
-import com.example.apiSample.model.UserList
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
+import com.example.apiSample.model.*
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface UserMapper {
     @Select(
-        """
-        SELECT id, name, email, created_at, updated_at FROM users WHERE id=#{userId}
+            """
+        SELECT * FROM authuser
         """
     )
-    fun findByUserId(userId: Long): UserProfile
+    fun findAllUserData(): List<user>
+    @Insert(
+            """
+         INSERT INTO authuser (Id, Name, UId,NamedId) VALUES (#{UserId},#{UserName},#{UId},#{NamedId})
+        """
+    )
+    fun InsertUserData(UserId:Long,UserName:String,UId:String,NamedId:String)
 
-    @Select(
-        """
-        SELECT id, name, email FROM users WHERE name LIKE CONCAT('%', #{searchStr}, '%')
+    @Delete(
+            """
+         DELETE FROM authuser
         """
     )
-    fun findBySearchStr(searchStr: String): ArrayList<UserList>
+    fun DeleteUserData()
+
+    @Update(
+            """
+         UPDATE authuser SET name=#{changedName} WHERE Id=#{id}
+        """
+    )
+    fun update(id:Long,changedName:String):Unit
 
     @Select(
             """
-        SELECT UserId, UserName, UserEmail,UserIconId FROM userDB WHERE UserId=#{userId}
+        SELECT * FROM authuser WHERE Id=#{id}
+        """
+    )
+    fun findById(id:Long): user?
+
+    @Select(
+            """
+        SELECT * FROM authuser WHERE UId=#{UId}
+        """
+    )
+    fun findByUId(UId:String): user
+
+    @Select(
+            """
+        SELECT * FROM authuser WHERE NamedId=#{NamedId}
+        """
+    )
+    fun findByNamedId(NamedId:String): List<user>
+
+    @Select(
+            """
+        SELECT * FROM authuser WHERE Name=#{Name}
+        """
+    )
+    fun findByName(Named:String): user?
+
+    @Select(
+            """
+         SELECT MAX(Id) FROM authuser
+        """
+    )
+    fun UserMaxId():Long?
+    /*
+    @Select(
+            """
+        SELECT UserId, UserName, UserEmail,UserIconId,UserIconURL FROM usersDB
+        """
+    )
+    fun findAllUserData(): List<UserData>
+    @Select(
+            """
+        SELECT UserId, UserName, UserEmail,UserIconId,UserIconURL FROM usersDB WHERE UserId=#{userId}
         """
     )
     fun findUserDataByUserId(userId: Long): UserData
     @Select(
             """
-        SELECT SenderId, RoomId, RoomType,Message,MessageType,MessageId,SendTime FROM MessageDB WHERE SenderId=#{SenderId}
+        SELECT UserName FROM usersDB WHERE UserId=#{userId}
         """
     )
-    fun findMessageByMessageId(SenderId: Long): MessageData
-    @Insert(
+    fun findUserNameByUserId(userId: Long): String
+    @Select(
             """
-         INSERT INTO userDB (UserId, UserName, UserEmail,UserIconId) VALUES (#{UserId},#{UserName},#{UserEmail},#{UserIconId})
+        SELECT UserIconURL FROM usersDB WHERE UserId=#{userId}
         """
+    )
+    fun findUserIconURLByUserId(userId: Long): String
 
-    )
-    fun InsertUserData(UserId:Long,UserName:String,UserEmail:String,UserIconId:Long)
-    @Insert(
+    @Select(
             """
-         INSERT INTO MessageDB (SenderId,RoomId,RoomType,Message,MessageType,MessageId,SendTime) VALUES (#{senderId},#{roomId},#{roomType},#{message},"string",#{messageId},CURRENT_TIMESTAMP)
+        SELECT MAX(UserIconId) FROM usersDB
         """
     )
-    fun InsertMessageData(senderId: Long,roomId: Long,roomType:String,message:String,messageId:Long)
+    fun findLastUserIconId(): Long?
+
+    @Insert(
+            """
+         INSERT INTO usersDB (UserId, UserName, UserEmail,UserIconId,UserIconURL) VALUES (#{UserId},#{UserName},#{UserEmail},#{UserIconId},#{UserIconURL})
+        """
+    )
+    fun InsertUserData(UserId:Long,UserName:String,UserEmail:String,UserIconId:Long,UserIconURL:String)
+
+
+
+    @Delete(
+            """
+         DELETE FROM usersDB
+        """
+    )
+    fun DeleteUserData()
+    */
+
 }

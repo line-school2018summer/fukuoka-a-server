@@ -10,6 +10,7 @@ data class ErrorResponse(val error_message: String)
 
 class BadRequestException(override val message: String) : Exception(message)
 class UnauthorizedException(override val message: String) : Exception(message)
+class NotFoundException(override val message: String) : Exception(message)
 
 @ControllerAdvice
 class apiExceptionHandler {
@@ -24,5 +25,11 @@ class apiExceptionHandler {
     fun notAuthorized(req: HttpServletRequest, e: UnauthorizedException): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(e.message)
         return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun notFound(req: HttpServletRequest, e: UnauthorizedException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(e.message)
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
     }
 }
