@@ -51,7 +51,7 @@ interface UserMapper {
         SELECT * FROM authuser WHERE NamedId=#{NamedId}
         """
     )
-    fun findByNamedId(NamedId:String): user?
+    fun findByNamedId(NamedId:String): List<user>
 
     @Select(
             """

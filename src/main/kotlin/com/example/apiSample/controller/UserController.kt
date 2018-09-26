@@ -50,11 +50,11 @@ class UserController(private val userDataService: UserDataService
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getList(@PathVariable("UserName" ) userName: String,
-                //@RequestHeader("Token")idToken: String,
+                @RequestHeader("Token")idToken: String,
                 @PathVariable("NamedId" ) namedId: String):user {
-        //val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
-        //return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
-        return userDataService.postUserData(userDataService.maxuserid()+1,userName,"test",namedId)
+        val uid = authGateway.verifyIdToken(idToken) ?: throw UnauthorizedException("invalid token")
+        return userDataService.postUserData(userDataService.maxuserid()+1,userName,uid,namedId)
+        //return userDataService.postUserData(userDataService.maxuserid()+1,userName,"test",namedId)
     }
     //useridでデータ検索
     @GetMapping(
@@ -77,7 +77,7 @@ class UserController(private val userDataService: UserDataService
             value = ["/user/NamedId"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun ByNamedId(@RequestParam("NamedId")NamedId: String): user {
+    fun ByNamedId(@RequestParam("NamedId")NamedId: String): List<user> {
         return userDataService.findByNamedId(NamedId)
     }
     @PutMapping(

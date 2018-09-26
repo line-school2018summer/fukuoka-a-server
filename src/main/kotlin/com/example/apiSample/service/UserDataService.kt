@@ -28,12 +28,13 @@ class UserDataService(private val userMapper: UserMapper) {
         if(userMapper.findById(Id)==null){throw Exception("no id")}
         else return userMapper.findById(Id)!!
     }
-    fun findByNamedId(NamedId:String):user{
-        if(userMapper.findByNamedId(NamedId)==null){throw Exception("no NamedId")}
+    fun findByNamedId(NamedId:String):List<user>{
+        if(userMapper.findByNamedId(NamedId)==null){return userMapper.findByNamedId(NamedId)!!
+        }//throw Exception("no NamedId")}
         else return userMapper.findByNamedId(NamedId)!!
     }
     fun findByUId(UId:String):user{
-        if(userMapper.findByUId(UId)==null){throw Exception("no Uid")}
+        if(userMapper.findByUId(UId)==null){throw Exception("")}
         else return userMapper.findByUId(UId)!!
     }
     fun updatename(Id:Long,changedName:String):user{

@@ -69,10 +69,10 @@ class GroupController(private val groupinfoService: GroupInfoService
     )
     fun getgroupList(@PathVariable("Name" ) name: String,
                      @PathVariable("isGroup" ) isGroup: Boolean, @PathVariable("IconURL" ) iconurl: String
-    ):Boolean {
+    ):room {
         //val uid = authGateway.verifyIdToken(token) ?: throw UnauthorizedException("invalid token")
         groupinfoService.postroomData(groupinfoService.roomidmax()+1,name,isGroup,iconurl)
-        return true
+        return room(groupinfoService.roomidmax()+1,name,isGroup,iconurl)
     }
     //roomidでuseridを出す
     @GetMapping(
